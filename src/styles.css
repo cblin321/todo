@@ -31,7 +31,7 @@
 
 .project-heading {
     padding: 20px;
-    margin: auto;
+    /* margin: auto; */
     background-color: var(--accent);
     width: 90%;
     height: 80px;
@@ -44,6 +44,29 @@
     border-radius: 4px;
     background-color: var(--font);
     transition: .4s;
+}
+
+nav > ul {
+    margin: 0;
+}
+
+#content > ul {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    width: 90%;
+}
+
+.task-list {
+    width: 100%;
+}
+
+form > input[type="text"] {
+
+}
+
+form {
+    width: 90
 }
 
 .burger-bar:nth-of-type(1).active {
@@ -84,10 +107,6 @@
     width: 20px;
 }
 
-ul {
-    margin: 0;
-}
-
 .text-menu {
     position: relative;
 }
@@ -100,6 +119,11 @@ ul {
     margin-left: calc(min(30px, 5%) + 16%);
     height: calc(100% - 65px);
     transition: .4s;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+     */
+     align-items: center;
 }
 
 .hamburger {
