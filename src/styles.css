@@ -1,0 +1,210 @@
+:root {
+    --font: #030a05;
+    --primary: gray;
+    --accent: #85e798;
+    --secondary: #f8f5f8;
+}
+
+.linethrough {
+    text-decoration-line: line-through;
+}
+
+.hidden {
+    top:0;
+    left:0;
+    pointer-events: none !important;
+    position: absolute !important;
+    max-height:0 !important;
+    opacity: 0 !important;
+}
+
+.hamburger:hover {
+    cursor: pointer;
+}
+
+.menu-circle {
+    height: 5px;
+    width: 5px;
+    border-radius: 2.5px;
+    background-color: black;
+}
+
+.project-heading {
+    padding: 20px;
+    margin: auto;
+    background-color: var(--accent);
+    width: 90%;
+    height: 80px;
+    display: flex;
+}
+
+.burger-bar {
+    width: 30px;
+    height: 5px;
+    border-radius: 4px;
+    background-color: var(--font);
+    transition: .4s;
+}
+
+.burger-bar:nth-of-type(1).active {
+    transform: rotate(45deg) translateY(14.5px);
+    margin: 0;
+}
+
+.active.burger-bar:nth-of-type(3) {
+    transform: rotate(-45deg) translateY(-14.5px);
+    margin: 0;
+}
+
+.active.burger-bar:nth-of-type(2) {
+    opacity: 0;
+    margin: 0;
+}
+
+.sidebar-ele {
+    padding: 8px;
+    width: 80%;
+    font-size: 1.4rem;
+    height: 40px;   
+}
+
+.sidebar {
+    margin-top: 2px;
+    position: fixed;
+    left: 0;
+    width: calc(16% + min(30px, 5%));
+    transition: .4s;
+    height: 100%;
+    top: 90px;
+    box-shadow: 1px 0 2px rgba(0, 0, 0, 0.2);
+
+}
+
+.text-menu-container {
+    width: 20px;
+}
+
+ul {
+    margin: 0;
+}
+
+.text-menu {
+    position: relative;
+}
+
+#content {
+    background-color:var(--secondary);
+    padding: 50px;
+    margin-top: 92px;
+    width: calc(100% - calc(min(30px, 5%) + 16% + 100px));
+    margin-left: calc(min(30px, 5%) + 16%);
+    height: calc(100% - 65px);
+    transition: .4s;
+}
+
+.hamburger {
+    height: 25px;
+}
+
+.active.sidebar {
+    left: calc(calc(min(30px, 5%) + 16%) * -1);
+    box-shadow: none !important;
+}
+
+.active#content {
+    width: calc(100% - 100px);
+    margin-left: 0;
+}
+
+nav {
+    z-index: 10;
+    background-color: white;
+    border-bottom: 2px solid var(--accent);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 90px;
+}
+
+.button-menu {
+    width: 80px;
+    height: 40px;
+    position: absolute;
+    pointer-events: none;
+    right: 15px;
+    top: 0;
+    opacity: 0; 
+    transition: .4s;
+    background-color: var(--primary);
+    border-radius: 6px;
+    box-shadow: 0 3px 6.5px rgba(0,0,0, 0.45);
+}
+
+.add-btn {
+    text-align: left;
+    border: none;
+    background-color: rgba(0,0,0, 0);
+    font-size: 1.2rem !important;
+}
+
+.sidebar-ele:hover {
+    background-color: rgba(0,0,0, .2);
+    cursor: pointer;
+}
+
+.button-menu.active {
+    pointer-events: auto !important;
+    top: -40px;
+    opacity: 1;
+}
+
+.text-menu-btn {
+    background-color: var(--primary);
+    border: none;
+    width: 100%;
+}
+
+.text-menu-btn:nth-of-type(odd) {
+    border-radius: 6px 6px 0 0;
+}
+
+.text-menu-btn:nth-of-type(even) {
+    border-radius: 0 0 6px 6px;
+}
+
+.interactable:hover {
+    cursor: pointer;
+}
+
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;  
+    padding: 0;
+}
+
+.sidebar-ele > input[type="text"] {
+        border: 2px solid var(--font);
+        border-radius: 4px;
+        padding: 10px 20px 10px 5px;
+        width: 80%;
+}
+
+.btn-container {
+    width: 80%;
+}
+
+.btn-container button {
+    border: none;
+    width: 30%;
+    height: 2rem;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+
+
+/* TODO get the task to disappear when you edit  */
