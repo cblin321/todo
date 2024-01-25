@@ -1,10 +1,10 @@
 import { createTaskManager } from './TaskManager';
 import './styles.css';
-import {createFlex, createText, createProjectContainer, renderSidebar} from "./DOMHelper";
+import {createFlex, createText, createProjectContainer, renderSidebar, createInitialContainer} from "./DOMHelper";
 let managerId = 0;
-const today = createTaskManager([], "Today", createProjectContainer(), managerId++); 
-const week = createTaskManager([], "Week", createProjectContainer(), managerId++); 
-const month = createTaskManager([], "Month", createProjectContainer(), managerId++); 
+const today = createTaskManager([], "Today", createInitialContainer(), managerId++); 
+const week = createTaskManager([], "Week", createInitialContainer(), managerId++); 
+const month = createTaskManager([], "Month", createInitialContainer(), managerId++); 
 const nav = document.createElement("nav");
 const logo = document.createElement("img");
 const navContent = document.createElement("ul");

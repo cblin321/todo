@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -12,6 +12,7 @@ module.exports = {
       title: 'todo',
       template: './dist/index.html'
     }),
+    new NodePolyfillPlugin(),
 
   ],
   module: {
@@ -26,5 +27,15 @@ module.exports = {
     port: 3000,  // You can change this port to any port you prefer
     open: true, 
     static: "./src" // Open the default browser when the server starts
-  },
+  },  
+  resolve: {
+    fallback: {
+      // "path": false,
+      // "util": false,
+      // "assert": false,
+      // "stream": false,
+      // "constants": false,
+      "fs": false,  
+    }
+  }
 };

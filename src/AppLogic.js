@@ -1,5 +1,6 @@
 import {createTask, createTaskManager, createTaskList} from "./TaskManager";
 import { createFlex, createText } from "./DOMHelper";
+import { create } from "enhanced-resolve";
 const createTaskMenu = function(taskManager, container, i) {
     const temp = createFlex("column", "space-evenly", "center", "2px", "text-menu-container");
     temp.style.position = "relative";
@@ -46,13 +47,23 @@ const removeManager = function(managerList, manager) {
 
 const createTaskElement = function(task, taskManager) {
     const temp = document.createElement("li");
-    temp.setAttribute("task-id", task.id); 
+    // low prio #e8cd04
+    // med prio #e8a004
+    // high prio #e84504
+    temp.classList.add("task-ele");
+    temp.setAttribute("task-id", task.id);
+    temp.style.display = "flex"; 
+    temp.style.justifyContent = "space-between"; 
     const check = document.createElement("input");
     check.setAttribute("type", "checkbox");
     const priorityMap = new Map();
     priorityMap.set(0, "low-prio");
     priorityMap.set(1, "medium-prio");
     priorityMap.set(2, "high-prio");
+    // const colorMap = new Map();
+    // priorityMap.set(0, "#e8cd04");
+    // priorityMap.set(1, "#e8a004");
+    // priorityMap.set(2, "#e84504");
     temp.classList.add(priorityMap.get(task.priority));
     check.addEventListener("click", () => {
             const h1 = temp.querySelectorAll("h1");
@@ -74,7 +85,7 @@ const createTaskElement = function(task, taskManager) {
     left.appendChild(title);
     left.appendChild(desc);
 
-    const right = createFlex("row", "space-evenly", "normal", "8px", "task-right");
+    const right = createFlex("row", "space-evenly", "center", "8px", "task-right");
     const date = createText(task.dueDate, "task-date");
     right.appendChild(date);
     createTaskMenu(taskManager, right, taskManager.tasks.tasks.length - 1);  
@@ -94,6 +105,8 @@ const createTaskElement = function(task, taskManager) {
     const container = createFlex("column", "center", "center", "5px", "task-list");
     const addTask = document.createElement("button");
     addTask.textContent = "Add a task";
+    addTask.classList.add("add-btn");
+    addTask.classList.add("task-ele");
     container.appendChild(addTask);
     addTask.addEventListener("click", () => {
         addTask.classList.toggle("hidden");
@@ -109,6 +122,7 @@ const createTaskElement = function(task, taskManager) {
  const editTask = function(target, taskManager) {
     const currTask = taskManager.tasks.getTask(parseInt(target.parentElement.getAttribute("task-id")));
     const createEditMenu = function(titleDef, descDef, dateDef, prioDef, currTask) {
+        const formRow = createFlex("row", "space-between", "center", "0");
         const temp = document.createElement("form");
         const title = document.createElement("input");
         title.setAttribute("type", "text");
@@ -193,10 +207,12 @@ const createTaskElement = function(task, taskManager) {
 
         temp.appendChild(title);
         temp.appendChild(desc);
-        temp.appendChild(date);
-        temp.appendChild(prioContainer);
+        formRow.appendChild(date);
+        formRow.appendChild(prioContainer);
+        temp.appendChild(formRow);
         temp.appendChild(submit);
         temp.appendChild(cancel);
+        console.log(temp);
         taskManager.container.appendChild(temp);    
     };
     const editMenu = createEditMenu(currTask.title, currTask.desc, currTask.dueDate, currTask.priority, currTask);
@@ -209,6 +225,7 @@ const createTaskElement = function(task, taskManager) {
  * @param {*} i id 
  */
 const createNewTask = function(manager, i, btn = null) {
+        const formRow = createFlex("row", "space-around", "center", "0", "form-row");
         const temp = document.createElement("form");
         const title = document.createElement("input");
         title.setAttribute("type", "text");
@@ -220,7 +237,7 @@ const createNewTask = function(manager, i, btn = null) {
         const date = document.createElement("input");
         date.setAttribute("required", "");
         date.setAttribute("type", "date");
-        const prioContainer = createFlex("row", "space-evenly", "center", "10px");
+        const prioContainer = createFlex("row", "space-between", "center", "10px");
         const lowPrio = document.createElement("input");
         lowPrio.setAttribute("required", "");
         lowPrio.setAttribute("type", "radio");
@@ -251,13 +268,20 @@ const createNewTask = function(manager, i, btn = null) {
         highLabel.textContent = "High";
         // highPrio.classList.add("unselected-btn");
         const buttons = [lowPrio, highPrio, medPrio];
-        prioContainer.appendChild(lowPrio);
-        prioContainer.appendChild(lowLabel);
-        prioContainer.appendChild(medPrio);
-        prioContainer.appendChild(medLabel);
-        prioContainer.appendChild(highPrio);
-        prioContainer.appendChild(highLabel);
+        const lowContainer = document.createElement("span");
+        const medContainer = document.createElement("span");
+        const highContainer = document.createElement("span");
+        lowContainer.appendChild(lowPrio);
+        lowContainer.appendChild(lowLabel);
+        medContainer.appendChild(medPrio);
+        medContainer.appendChild(medLabel);
+        highContainer.appendChild(highPrio);
+        highContainer.appendChild(highLabel);
+        prioContainer.appendChild(lowContainer);
+        prioContainer.appendChild(medContainer);
+        prioContainer.appendChild(highContainer);
         const submit = document.createElement("input");
+        submit.classList.add("submit-btn");
         submit.setAttribute("type", "submit");
         submit.textContent = "Submit";
         const required = [lowPrio, highPrio, medPrio, title, date, desc];
@@ -282,6 +306,7 @@ const createNewTask = function(manager, i, btn = null) {
             submitCreation(newTask, manager, temp); //TODO doesn't do what it should do need make submit edit change the actual task instead of adding a new one
         }); 
         const cancel = document.createElement("button");
+        const btnRow = createFlex("row", "space-evenly", "center", "0");
         cancel.classList.add("cancel-btn");
         cancel.addEventListener("click", () => {
             manager.container.innerHTML = "";
@@ -293,10 +318,12 @@ const createNewTask = function(manager, i, btn = null) {
 
         temp.appendChild(title);
         temp.appendChild(desc);
-        temp.appendChild(date);
-        temp.appendChild(prioContainer);
-        temp.appendChild(submit);
-        temp.appendChild(cancel);
+        formRow.appendChild(date);
+        formRow.appendChild(prioContainer);
+        temp.appendChild(formRow);
+        btnRow.appendChild(submit);
+        btnRow.appendChild(cancel);
+        temp.appendChild(btnRow);
         manager.container.appendChild(temp);        
     };
 
@@ -345,12 +372,14 @@ const addTaskManager = function(name, managerList) {
     const newTaskList = createTaskList([]);
     const container = createFlex("column", "center", "center", "5px", "task-list");
     const addTask = document.createElement("button");
+    addTask.classList.add("add-btn");
+    addTask.classList.add("task-ele");
     addTask.textContent = "Add a task";
     container.appendChild(addTask);
     const newTaskManager = createTaskManager(newTaskList, name, container, managerList[managerList.length - 1].id + 1);
     addTask.addEventListener("click", () => {
         addTask.classList.toggle("hidden");
-        console.log(addTask);
+        // console.log(addTask);
         createNewTask(newTaskManager, newTaskManager.tasks.tasks.length, addTask); 
     });
     managerList.push(newTaskManager);

@@ -2,11 +2,67 @@
     --font: #030a05;
     --primary: gray;
     --accent: #85e798;
+    --cancel: #d1191f;
+    --submit: #2cdd44;
     --secondary: #f8f5f8;
+    --low: #e8cd04;
+    --med: #e8a004;
+    --high: #e84504;
+}
+
+.low-prio {
+    border: 1px solid var(--low);  
+}
+
+.medium-prio {
+    border: 1px solid var(--med);  
+}
+
+.high-prio {
+    border: 1px solid var(--high);  
 }
 
 .linethrough {
     text-decoration-line: line-through;
+}
+
+.submit-btn {
+    background-color: var(--submit);
+    color: white;
+    font-weight: 600;
+}
+
+.submit-btn, .cancel-btn {
+    border: none;
+    border-radius: 4px;
+    height: 40px;
+    width: 100px;
+}
+
+#content ul {
+    list-style: none;
+}
+
+input::placeholder, textarea::placeholder, button {
+    font-family: inherit;
+}
+
+nav > ul {
+    padding: 0 !important;
+}
+
+input:hover {
+    cursor: pointer;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: var(--cancel);
+    color: white;
+    font-weight: 600;       
 }
 
 .hidden {
@@ -31,11 +87,13 @@
 
 .project-heading {
     padding: 20px;
-    margin: auto;
+    margin: 0;
+    /* margin: auto; */
     background-color: var(--accent);
     width: 90%;
     height: 80px;
     display: flex;
+    border-radius: 6px;
 }
 
 .burger-bar {
@@ -66,6 +124,20 @@
     width: 80%;
     font-size: 1.4rem;
     height: 40px;   
+    border-radius: 4px;
+}
+
+.sidebar-input-ele {
+    padding: 8px;
+    width: 80%;
+    font-size: 1.4rem;
+    height: 80px;   
+}
+
+.task-ele > input[type="checkbox"] {
+    width: 100%;
+    height: 100%;
+    display: none;
 }
 
 .sidebar {
@@ -86,13 +158,58 @@
 
 ul {
     margin: 0;
+    padding: 20px;
+    width: 90%;
 }
 
 .text-menu {
     position: relative;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+form > input, .form-row, form > button {
+    border-radius: 3px;
+    height: 30px;
+}
+
+form > input, form > button {
+    border: 2px solid var(--font);
+}
+
+.form-row > input[type="date"] {
+    border: 2px solid var(--font);
+    border-radius: 3px;
+}
+
+form > textarea {
+    height: 50px;
+    resize: none;
+    border: 2px solid var(--font);
+}
+
+.form-row > * {
+    width: 35%;
+    height: 100%;
+}
+
+input[type="radio"] {
+    margin-right: 1rem;
+    /* accent-color: 2px solid var(--font); */
+    accent-color: var(--font);
+}
+
 #content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color:var(--secondary);
     padding: 50px;
     margin-top: 92px;
@@ -145,10 +262,16 @@ nav {
     text-align: left;
     border: none;
     background-color: rgba(0,0,0, 0);
-    font-size: 1.2rem !important;
+    font-size: 1.4rem !important;
 }
 
-.sidebar-ele:hover {
+.task-ele {
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+}
+
+.sidebar-ele:hover, .sidebar-input-ele:hover, .add-btn:hover {
     background-color: rgba(0,0,0, .2);
     cursor: pointer;
 }
@@ -183,13 +306,18 @@ html, body {
     height: 100%;
     margin: 0;  
     padding: 0;
+    font-family: 'Red Hat Display', sans-serif;
 }
 
-.sidebar-ele > input[type="text"] {
+.sidebar-input-ele > input[type="text"] {
         border: 2px solid var(--font);
         border-radius: 4px;
         padding: 10px 20px 10px 5px;
         width: 80%;
+}
+
+form {
+    width: 100%;
 }
 
 .btn-container {

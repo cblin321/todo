@@ -30,6 +30,11 @@ const createProjectContainer = function() {
     return temp;
 };
 
+const createInitialContainer = function() {
+    const temp = createFlex("column", "center", "center", "5px", "task-list");
+    return temp;
+}; 
+
 const initSidebarElement = function(taskManager, projectList, content, i, title, sidebar) {
     const temp = createFlex("row", "space-between", "center", "5px", "sidebar-ele");
     temp.addEventListener("click", () => {
@@ -121,7 +126,7 @@ const renderSidebar = function(projectList, content, title) {
 };
 
 const createProjectElement = function(elementList, projectList, content, title) {
-    const container = createFlex("column", "space-evenly", "center", "5px", "sidebar-ele");
+    const container = createFlex("column", "space-evenly", "center", "5px", "sidebar-input-ele");
     const buttonContainer = createFlex("row", "center", "center", "20px", "btn-container");
     // target.parentElement.style.flexDirection = "column";
     const input = document.createElement("input");
@@ -129,11 +134,13 @@ const createProjectElement = function(elementList, projectList, content, title) 
     input.setAttribute("placeholder", "New project name here");
     //TODO fix arrangement of input, submit, cancel (currently not in a triangle shape)
     const submit = document.createElement("button");
+    submit.classList.add("submit-btn");
     submit.addEventListener("click", () => {
         addTaskManager(input.value, projectList);
         document.body.replaceChild(renderSidebar(projectList, content, title), elementList);
     });
     const cancel = document.createElement("button");
+    cancel.classList.add("cancel-btn");
     cancel.addEventListener("click", () => {
         document.body.replaceChild(renderSidebar(projectList, content, title), elementList);
     });
@@ -159,11 +166,13 @@ const editProjectElement = function(taskManager, projectList, content, title, si
     container.innerHTML = "";
     //TODO fix arrangement of input, submit, cancel (currently not in a triangle shape)
     const submit = document.createElement("button");
+    submit.classList.add("submit-btn");
     submit.addEventListener("click", () => {
         taskManager.name = input.value;
         document.body.replaceChild(renderSidebar(projectList, content, title), sidebar);
     });
     const cancel = document.createElement("button");
+    cancel.classList.add("cancel-btn");
     cancel.addEventListener("click", () => {
         document.body.replaceChild(renderSidebar(projectList, content, title), sidebar);
     });
@@ -174,4 +183,4 @@ const editProjectElement = function(taskManager, projectList, content, title, si
     container.appendChild(cancel);
 };
 
-export {createFlex, createText, createProjectContainer, renderSidebar};
+export {createFlex, createText, createProjectContainer, renderSidebar, createInitialContainer};

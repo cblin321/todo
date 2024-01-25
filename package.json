@@ -36,6 +36,7 @@
     "fastest-levenshtein": "^1.0.16",
     "find-up": "^4.1.0",
     "flat": "^5.0.2",
+    "fs": "^0.0.1-security",
     "function-bind": "^1.1.2",
     "glob-to-regexp": "^0.4.1",
     "graceful-fs": "^4.2.11",
@@ -57,10 +58,13 @@
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
     "neo-async": "^2.6.2",
+    "node-polyfill-webpack-plugin": "^3.0.0",
     "node-releases": "^2.0.14",
     "p-limit": "^2.3.0",
     "p-locate": "^4.1.0",
     "p-try": "^2.2.0",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
     "path-exists": "^4.0.0",
     "path-key": "^3.1.1",
     "path-parse": "^1.0.7",
@@ -89,6 +93,7 @@
     "undici-types": "^5.26.5",
     "update-browserslist-db": "^1.0.13",
     "uri-js": "^4.4.1",
+    "util": "^0.12.5",
     "watchpack": "^2.4.0",
     "webpack-merge": "^5.10.0",
     "webpack-sources": "^3.2.3",
@@ -102,5 +107,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "browser": {
+    "path": false,
+    "constants": false
+  }
 }
