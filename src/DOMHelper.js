@@ -24,7 +24,7 @@ const createProjectContainer = function() {
     const addTask = document.createElement("button");
     addTask.textContent = "Add a task";
     addTask.addEventListener("click", () => {
-        createNewTask(); //TODO
+        createNewTask(); 
     });
     temp.appendChild(addTask);
     return temp;
@@ -71,7 +71,7 @@ const initSidebarElement = function(taskManager, projectList, content, i, title,
         temp.appendChild(circle2);
         temp.appendChild(circle3);
         temp.addEventListener("click", (e) => {
-            const selected = document.body.querySelector(".sidebar > .sidebar-ele >.text-menu > .button-menu.active");
+            const selected = document.body.querySelector(".button-menu.active");
             if (selected)
                 selected.classList.toggle("active");
             if (selected === buttonContainer) {
@@ -79,8 +79,6 @@ const initSidebarElement = function(taskManager, projectList, content, i, title,
                 e.stopPropagation();
             }
             buttonContainer.classList.toggle("active");
-            // edit.classList.toggle("active");
-            // del.classList.toggle("active");
             e.stopPropagation();    
         });
         (function(buttonContainer) {document.body.addEventListener("click", (e) => {
@@ -132,7 +130,6 @@ const createProjectElement = function(elementList, projectList, content, title) 
     const input = document.createElement("input");
     input.setAttribute("type", "text");
     input.setAttribute("placeholder", "New project name here");
-    //TODO fix arrangement of input, submit, cancel (currently not in a triangle shape)
     const submit = document.createElement("button");
     submit.classList.add("submit-btn");
     submit.addEventListener("click", () => {
@@ -164,7 +161,6 @@ const editProjectElement = function(taskManager, projectList, content, title, si
     input.setAttribute("type", "text");
     input.setAttribute("placeholder", "New project name here");
     container.innerHTML = "";
-    //TODO fix arrangement of input, submit, cancel (currently not in a triangle shape)
     const submit = document.createElement("button");
     submit.classList.add("submit-btn");
     submit.addEventListener("click", () => {

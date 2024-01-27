@@ -6,20 +6,20 @@
     --submit: #2cdd44;
     --secondary: #f8f5f8;
     --low: #e8cd04;
-    --med: #e8a004;
+    --med: #d87300;
     --high: #e84504;
 }
 
 .low-prio {
-    border: 1px solid var(--low);  
+    border: 1.5px solid var(--low);  
 }
 
 .medium-prio {
-    border: 1px solid var(--med);  
+    border: 1.5px solid var(--med);  
 }
 
 .high-prio {
-    border: 1px solid var(--high);  
+    border: 1.5px solid var(--high);  
 }
 
 .linethrough {
@@ -49,6 +49,7 @@ input::placeholder, textarea::placeholder, button {
 
 nav > ul {
     padding: 0 !important;
+    margin: auto;
 }
 
 input:hover {
@@ -98,14 +99,10 @@ button:hover {
 
 .burger-bar {
     width: 30px;
-    height: 5px;
+    height: 3px;
     border-radius: 4px;
     background-color: var(--font);
     transition: .4s;
-}
-
-nav > ul {
-    margin: 0;
 }
 
 #content > ul {
@@ -119,8 +116,15 @@ nav > ul {
     width: 100%;
 }
 
-form > input[type="text"] {
+/* form > input[type="text"] {
 
+} */
+
+input[type="checkbox"] {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
 }
 
 form {
@@ -128,12 +132,12 @@ form {
 }
 
 .burger-bar:nth-of-type(1).active {
-    transform: rotate(45deg) translateY(14.5px);
+    transform: rotate(45deg) translateY(11.5px);
     margin: 0;
 }
 
 .active.burger-bar:nth-of-type(3) {
-    transform: rotate(-45deg) translateY(-14.5px);
+    transform: rotate(-45deg) translateY(-11.5px);
     margin: 0;
 }
 
@@ -160,11 +164,31 @@ form {
 .task-ele > input[type="checkbox"] {
     width: 100%;
     height: 100%;
-    display: none;
+    position: absolute;
+    /* display: none; */
+    opacity: 0;
+}
+
+.task-list > li {
+    height: 60px;
+}
+
+li p, li h2 {
+    vertical-align: middle;
+}
+
+li p {
+    margin: 0;
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
 }
 
 .sidebar {
     margin-top: 2px;
+    padding-top: 70px;
     position: fixed;
     left: 0;
     width: calc(16% + min(30px, 5%));
@@ -176,13 +200,13 @@ form {
 }
 
 .text-menu-container {
-    width: 20px;
+    width: 30px;
 }
 
 ul {
     margin: 0;
     padding: 20px;
-    width: 90%;
+    width: 95%;
 }
 
 .text-menu {
@@ -274,17 +298,22 @@ nav {
 
 .button-menu {
     width: 80px;
-    height: 40px;
+    height: 78px;
     position: absolute;
     pointer-events: none;
-    right: 15px;
+    right: 20px;
     top: 0;
     opacity: 0; 
     transition: .4s;
     background-color: var(--primary);
     border-radius: 6px;
-    box-shadow: 0 3px 6.5px rgba(0,0,0, 0.45);
+    box-shadow: 0 3px 6.5px rgba(0,0,0, 0.3);
 }
+
+ .button-menu > button {
+    padding: 8px;
+    font-size: 1.1rem;
+ }
 
 .add-btn {
     text-align: left;
@@ -294,6 +323,7 @@ nav {
 }
 
 .task-ele {
+    position: relative;
     padding: 10px;
     width: 100%;
     border-radius: 6px;
@@ -306,12 +336,12 @@ nav {
 
 .button-menu.active {
     pointer-events: auto !important;
-    top: -40px;
+    top: -78px;
     opacity: 1;
 }
 
 .text-menu-btn {
-    background-color: var(--primary);
+    background-color: var(--secondary);
     border: none;
     width: 100%;
 }

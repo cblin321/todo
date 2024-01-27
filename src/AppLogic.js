@@ -3,6 +3,7 @@ import { createFlex, createText } from "./DOMHelper";
 import { create } from "enhanced-resolve";
 const createTaskMenu = function(taskManager, container, i) {
     const temp = createFlex("column", "space-evenly", "center", "2px", "text-menu-container");
+    const textMenu = createFlex("row", "space-evenly", "center", "0", "text-menu");
     temp.style.position = "relative";
     const circle1 = document.createElement("span");
     circle1.classList.add("menu-circle");
@@ -15,13 +16,27 @@ const createTaskMenu = function(taskManager, container, i) {
     temp.appendChild(circle3);
 
     //TODO create functionality for edit and delete
-    const menu = createFlex("column", "space-evenly", "center", "0", "text-menu");
+    const menu = createFlex("column", "space-evenly", "center", "0", "button-menu");
     // temp.addEventListener("click", () => {
     //     menu.classList.toggle("hidden");
     // })(menu);
-    temp.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
+    temp.addEventListener("click", (e) => {
+        const selected = document.body.querySelector(".button-menu.active");
+        if (selected)
+            selected.classList.toggle("active");
+        if (selected === menu) {
+            menu.classList.toggle("active");
+            e.stopPropagation();
+        }
+        menu.classList.toggle("active");
+        e.stopPropagation();
     });
+    (function(menu) {document.body.addEventListener("click", (e) => {
+        // var isClickOnButton = (e.target === kebabButton);
+        const selected = document.body.querySelector(".button-menu.active");
+        if (selected)
+            selected.classList.toggle("active");
+    })})(menu);
     const edit = document.createElement("button");
     edit.textContent = "Edit";
     edit.addEventListener("click", (e) => {
@@ -32,13 +47,17 @@ const createTaskMenu = function(taskManager, container, i) {
         taskManager.removeTask(i);
         initTasks(taskManager);
     });
+    edit.classList.add("text-menu-btn");
+    del.classList.add("text-menu-btn");
     del.textContent = "Delete";
     menu.setAttribute("task-id", i)
     menu.appendChild(edit);
     menu.appendChild(del);
-    menu.classList.add("hidden");
-    container.appendChild(temp);
-    container.appendChild(menu);
+    // menu.classList.add("hidden");
+    textMenu.appendChild(temp);
+    textMenu.appendChild(menu);
+    textMenu.classList.add("interactable");
+    container.appendChild(textMenu);
 };
 
 const removeManager = function(managerList, manager) {
@@ -47,9 +66,6 @@ const removeManager = function(managerList, manager) {
 
 const createTaskElement = function(task, taskManager) {
     const temp = document.createElement("li");
-    // low prio #e8cd04
-    // med prio #e8a004
-    // high prio #e84504
     temp.classList.add("task-ele");
     temp.setAttribute("task-id", task.id);
     temp.style.display = "flex"; 
@@ -60,10 +76,6 @@ const createTaskElement = function(task, taskManager) {
     priorityMap.set(0, "low-prio");
     priorityMap.set(1, "medium-prio");
     priorityMap.set(2, "high-prio");
-    // const colorMap = new Map();
-    // priorityMap.set(0, "#e8cd04");
-    // priorityMap.set(1, "#e8a004");
-    // priorityMap.set(2, "#e84504");
     temp.classList.add(priorityMap.get(task.priority));
     check.addEventListener("click", () => {
             const h1 = temp.querySelectorAll("h1");
@@ -79,7 +91,7 @@ const createTaskElement = function(task, taskManager) {
 
     const title = document.createElement("h2");
     title.textContent = task.title;
-    const desc = document.createElement("h2");
+    const desc = document.createElement("p");
     desc.textContent = task.desc;
     const left = document.createElement("div");
     left.appendChild(title);
@@ -102,7 +114,7 @@ const createTaskElement = function(task, taskManager) {
  * @param {*} skip 
  */
  const initTasks = function(taskManager, skip = null) {
-    const container = createFlex("column", "center", "center", "5px", "task-list");
+    const container = createFlex("column", "center", "center", "25px", "task-list");
     const addTask = document.createElement("button");
     addTask.textContent = "Add a task";
     addTask.classList.add("add-btn");
@@ -120,9 +132,10 @@ const createTaskElement = function(task, taskManager) {
  };
 
  const editTask = function(target, taskManager) {
-    const currTask = taskManager.tasks.getTask(parseInt(target.parentElement.getAttribute("task-id")));
-    const createEditMenu = function(titleDef, descDef, dateDef, prioDef, currTask) {
-        const formRow = createFlex("row", "space-between", "center", "0");
+     const currTask = taskManager.tasks.getTask(parseInt(target.parentElement.getAttribute("task-id")));
+     const createEditMenu = function(titleDef, descDef, dateDef, prioDef, currTask) {
+        const formRow = createFlex("row", "space-around", "center", "0", "form-row");
+        const btnRow = createFlex("row", "space-evenly", "center", "0");         
         const temp = document.createElement("form");
         const title = document.createElement("input");
         title.setAttribute("type", "text");
@@ -157,7 +170,6 @@ const createTaskElement = function(task, taskManager) {
         const medLabel = document.createElement("label");
         medLabel.setAttribute("for", `med-priority-${currTask.id}`)
         medLabel.textContent = "Med";
-        // medPrio.classList.add("unselected-btn");
         const highPrio = document.createElement("input");
         highPrio.setAttribute("type", "radio");
         highPrio.setAttribute("name", `priority-${currTask.id}`);
@@ -167,8 +179,6 @@ const createTaskElement = function(task, taskManager) {
         const highLabel = document.createElement("label");
         highLabel.setAttribute("for", `high-priority-${currTask.id}`)
         highLabel.textContent = "High";
-        // highPrio.classList.add("unselected-btn");
-        console.log(prioDef);
         const buttons = [lowPrio, highPrio, medPrio];
         if (prioDef === 0) 
             lowPrio.checked = true;
@@ -176,12 +186,18 @@ const createTaskElement = function(task, taskManager) {
             medPrio.checked = true;
         else
             highPrio.checked = true;
-        prioContainer.appendChild(lowPrio);
-        prioContainer.appendChild(lowLabel);
-        prioContainer.appendChild(medPrio);
-        prioContainer.appendChild(medLabel);
-        prioContainer.appendChild(highPrio);
-        prioContainer.appendChild(highLabel);
+        const lowContainer = document.createElement("span");
+        const medContainer = document.createElement("span");
+        const highContainer = document.createElement("span");
+        lowContainer.appendChild(lowPrio);
+        lowContainer.appendChild(lowLabel);
+        medContainer.appendChild(medPrio);
+        medContainer.appendChild(medLabel);
+        highContainer.appendChild(highPrio);
+        highContainer.appendChild(highLabel);
+        prioContainer.appendChild(lowContainer);
+        prioContainer.appendChild(medContainer);
+        prioContainer.appendChild(highContainer);
 
         const submit = document.createElement("input");
         submit.setAttribute("type", "submit");
@@ -197,6 +213,7 @@ const createTaskElement = function(task, taskManager) {
                 newTask = createTask(title.value, desc.value, date.value, false, currTask.id, 0);
             submitEdit(newTask, taskManager, temp);
         }); 
+        submit.classList.add("submit-btn");
         const cancel = document.createElement("button");
         cancel.classList.add("cancel-btn");
         cancel.addEventListener("click", () => {
@@ -210,10 +227,13 @@ const createTaskElement = function(task, taskManager) {
         formRow.appendChild(date);
         formRow.appendChild(prioContainer);
         temp.appendChild(formRow);
-        temp.appendChild(submit);
-        temp.appendChild(cancel);
-        console.log(temp);
-        taskManager.container.appendChild(temp);    
+        btnRow.appendChild(submit);
+        btnRow.appendChild(cancel);
+        temp.appendChild(btnRow);
+        const currEle = document.body.querySelector(`li[task-id="${target.parentElement.getAttribute("task-id")}"]`);
+        console.log(currEle);
+        document.body.querySelector(".task-list").replaceChild(temp, currEle);
+        // taskManager.container.appendChild(temp);    
     };
     const editMenu = createEditMenu(currTask.title, currTask.desc, currTask.dueDate, currTask.priority, currTask);
     // initTasks(taskManager);
@@ -315,7 +335,6 @@ const createNewTask = function(manager, i, btn = null) {
                 btn.classList.toggle("hidden");
         });
         cancel.textContent = "Cancel";
-
         temp.appendChild(title);
         temp.appendChild(desc);
         formRow.appendChild(date);
@@ -370,7 +389,7 @@ const addTaskManager = function(name, managerList) {
     // const temp = createFlex("row", "space-between", "center", "0", "project");
     //TODO implement indicator to show user how many unfinished tasks
     const newTaskList = createTaskList([]);
-    const container = createFlex("column", "center", "center", "5px", "task-list");
+    const container = createFlex("column", "center", "center", "20px", "task-list");
     const addTask = document.createElement("button");
     addTask.classList.add("add-btn");
     addTask.classList.add("task-ele");
