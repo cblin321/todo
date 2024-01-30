@@ -204,7 +204,7 @@ h2 {
 
 .sidebar {
     margin-top: 2px;
-    padding-top: 70px;
+    padding-top: 10px;
     position: fixed;
     left: 0;
     width: calc(16% + min(30px, 5%));
