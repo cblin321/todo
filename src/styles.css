@@ -154,6 +154,22 @@ form {
     border-radius: 4px;
 }
 
+.sidebar-ele > h1 {
+    font-size: 1.6rem;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-ele:nth-child(1), .sidebar-ele:nth-child(5) {
+    border-bottom: 2px solid var(--font);
+    border-radius: 0;
+} 
+
+.sidebar-ele:nth-child(1):hover, .sidebar-ele:nth-child(5):hover {
+    background-color: white;
+    cursor: auto;
+} 
+
 .sidebar-input-ele {
     padding: 8px;
     width: 80%;

@@ -102,10 +102,29 @@ const initSidebarElement = function(taskManager, projectList, content, i, title,
 const renderSidebar = function(projectList, content, title) {
     const temp = createFlex("column", "flex-start", "center", "20px", "sidebar");
     let j = 0;
+    const upcoming = document.createElement("div");
+    upcoming.classList.add("sidebar-ele");
+    const upcomingLabel = document.createElement("h1");
+    upcomingLabel.textContent = "Upcoming";
+    upcoming.appendChild(upcomingLabel);
+    temp.appendChild(upcoming);
     if (projectList) {
-        for (const i of projectList) {
-            temp.appendChild((() => initSidebarElement(i, projectList, content, j, title, temp))(i));
+        for (let i = 0; i < 3; i++) {
+            temp.appendChild((() => initSidebarElement(projectList[i], projectList, content, j, title, temp))(i));
             j++;
+        }
+        const personal = document.createElement("div");
+        personal.classList.add("sidebar-ele");
+        const personalLabel = document.createElement("h1");
+        personalLabel.textContent = "Personal Projects";
+        personal.appendChild(personalLabel);
+        temp.appendChild(personal);
+        console.log();
+        let i = 3;
+        while (i < projectList.length) {
+            temp.appendChild((() => initSidebarElement(projectList[i], projectList, content, j, title, temp))(i));
+            j++;
+            i++;
         }
     }
     const add = document.createElement("button");
