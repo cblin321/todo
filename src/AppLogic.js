@@ -1,6 +1,7 @@
 import {createTask, createTaskManager, createTaskList} from "./TaskManager";
 import { createFlex, createText } from "./DOMHelper";
 import { create } from "enhanced-resolve";
+import { upcomingProjects } from "./index";
 const createTaskMenu = function(taskManager, container, i) {
     const temp = createFlex("column", "space-evenly", "center", "2px", "text-menu-container");
     const textMenu = createFlex("row", "space-evenly", "center", "0", "text-menu");
@@ -122,7 +123,7 @@ const createTaskElement = function(task, taskManager) {
     container.appendChild(addTask);
     addTask.addEventListener("click", () => {
         addTask.classList.toggle("hidden");
-        createNewTask(taskManager, taskManager.id, addTask); //TODO
+        createNewTask(taskManager, taskManager.id, addTask); 
     });
     for (const i of taskManager.tasks.tasks) {
         container.appendChild(createTaskElement(i, taskManager));
@@ -305,7 +306,7 @@ const createNewTask = function(manager, i, btn = null) {
         submit.setAttribute("type", "submit");
         submit.textContent = "Submit";
         const required = [lowPrio, highPrio, medPrio, title, date, desc];
-        submit.addEventListener("click", () => {
+        const result = submit.addEventListener("click", () => {
             let newTask;
             event.preventDefault();
             for (const i of required) {
@@ -323,7 +324,7 @@ const createNewTask = function(manager, i, btn = null) {
             else
                 newTask = createTask(title.value, desc.value, date.value, false, i, 0);
             //manager.addTask(newTask) 
-            submitCreation(newTask, manager, temp); //TODO doesn't do what it should do need make submit edit change the actual task instead of adding a new one
+            submitCreation(newTask, manager, temp); 
         }); 
         const cancel = document.createElement("button");
         const btnRow = createFlex("row", "space-evenly", "center", "0");
@@ -343,7 +344,7 @@ const createNewTask = function(manager, i, btn = null) {
         btnRow.appendChild(submit);
         btnRow.appendChild(cancel);
         temp.appendChild(btnRow);
-        manager.container.appendChild(temp);        
+        manager.container.appendChild(temp);      
     };
 
 /**
@@ -355,6 +356,7 @@ const createNewTask = function(manager, i, btn = null) {
  */
 const submitCreation = function(task, taskManager, container) {
     taskManager.addTask(task);
+    dateCategorize(task);
     initTasks(taskManager);
 };
 
@@ -375,18 +377,17 @@ const submitEdit = function(task, taskManager, container) {
     prioMap.set("lowpriority", 0);
     prioMap.set("medpriority", 1);
     prioMap.set("highpriority", 2);
-    console.log(prioMap.get(components[0] + components[1]));
     const values = [inputs[0].value, desc[0].value, inputs[1].value, prioMap.get(components[0] + components[1])];
     const fields = ["title", "desc", "dueDate", "priority"];
     //title, desc, date, prio
     for (let i = 0; i < 4; i++) {
         taskManager.changeTask(fields[i], task.id, values[i]);
     }
+    dateCategorize(task);
     initTasks(taskManager);
 };
 
 const addTaskManager = function(name, managerList) { 
-    // const temp = createFlex("row", "space-between", "center", "0", "project");
     //TODO implement indicator to show user how many unfinished tasks
     const newTaskList = createTaskList([]);
     const container = createFlex("column", "center", "center", "20px", "task-list");
@@ -398,10 +399,51 @@ const addTaskManager = function(name, managerList) {
     const newTaskManager = createTaskManager(newTaskList, name, container, managerList[managerList.length - 1].id + 1);
     addTask.addEventListener("click", () => {
         addTask.classList.toggle("hidden");
-        // console.log(addTask);
-        createNewTask(newTaskManager, newTaskManager.tasks.tasks.length, addTask); 
+        createNewTask(newTaskManager, newTaskManager.tasks.tasks.length, addTask);
+        //TODO if a new task is created add it to the appropriate week, month, etc. 
     });
     managerList.push(newTaskManager);
+};
+
+const dateCategorize = function(changedTask) {
+    // const upcomingProjects = [today, week, month];
+    console.log(upcomingProjects);
+    const today  = new Date(Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate()
+      ));
+    const components = changedTask.dueDate.split("-");
+    const taskDate = new Date(Date.UTC(components[0], parseInt(components[1]) - 1, components[2]));
+    const taskNextMonth = new Date(Date.UTC(components[0], parseInt(components[1]) - 1, components[2]));
+    taskNextMonth.setDate(taskNextMonth.getMonth() + 1);
+    let index = upcomingProjects[0].tasks.indexOf((task) => {
+        return changedTask === task;
+    });
+    if (index !== -1)
+        upcomingProjects[0].tasks.splice(index, 1);
+    index = upcomingProjects[1].tasks.indexOf((task) => {
+        return changedTask === task;
+    });
+    if (index !== -1)
+        upcomingProjects[1].tasks.splice(index, 1);
+    index = upcomingProjects[2].tasks.indexOf((task) => {
+        return changedTask === task;
+    });
+    if (index !== -1)
+        upcomingProjects[2].tasks.splice(index, 1);
+    console.log(today);
+    console.log(taskDate);
+    if (today.getDay() == taskDate.getDay() && today.getMonth() == taskDate.getMonth() && today.getUTCFullYear() == taskDate.getUTCFullYear()){
+        upcomingProjects[0].tasks.push(changedTask);
+        console.log("today task");
+    } else if (today.getDate() + 7 >= taskDate) 
+        upcomingProjects[1].addTask(changedTask);
+    else if (taskNextMonth.getDate() >= taskDate)
+        upcomingProjects[2].addTask(changedTask);
+    // console.log(upcomingProjects[0].tasks);
+    // console.log(upcomingProjects[1].tasks);
+    // console.log(upcomingProjects[2].tasks);
 };
 
 export {addTaskManager, removeManager, createNewTask};

@@ -18,6 +18,7 @@ const logo = document.createElement("img");
 const navContent = document.createElement("ul");
 const content = document.createElement("div");
 const projectList = [today, week, month];
+const upcomingProjects = [today, week, month];
 content.setAttribute("id", "content");
 const taskListDOM = document.createElement("ul");
 let currProject = today;
@@ -50,7 +51,7 @@ navContent.style.height = "calc(100%)";
 navContent.style.justifyContent = "space-between";
 navContent.style.alignItems = "center";
 navContent.appendChild(hamburgerContainer);
-navContent.appendChild(logo); //center this?
+navContent.appendChild(logo); 
 nav.appendChild(navContent);
 
 title.textContent = "To-Do";
@@ -62,3 +63,5 @@ document.body.appendChild(sidebar);
 content.appendChild(titleContainer);
 content.appendChild(taskListDOM);
 document.body.appendChild(content);
+
+export {upcomingProjects};
